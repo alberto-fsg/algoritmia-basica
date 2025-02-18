@@ -1,0 +1,21 @@
+1. Descripción general del directorio: cómo está organizado.
+    practica1_872016_873373
+    ├── clean.sh // borra ficheros binarios y .huf
+    ├── ejecutar.sh // compila el proyecto y ejecuta las pruebas
+    ├── huffman // código fuente de la práctica
+    │   ├── abb.cpp
+    │   ├── abb.hpp
+    │   └── main.cpp
+    ├── LEEME
+    └── pruebas // ficheros necesarios para las pruebas
+        ├── bible.txt
+        ├── ejemplo_tarea_3.txt
+        ├── low_freq.txt
+        └── quijote.txt
+2. Instrucciones de compilación y ejecución.
+    - compilación: g++ huf/main.cpp huf/abb.cpp -o huf
+    - compresión de <fichero>: ./huf -c <fichero>
+    - descompresión de <fichero.huf>: ./huf -d <fichero.huf>
+    - compresión de <fichero> con límite <n>: ./huf -c -l <n> <fichero> 
+3. Instrucciones para repetir las pruebas.
+    ./ejecutar.sh
