@@ -1,35 +1,24 @@
 #include <opencv2/opencv.hpp>
 #include <iostream>
 
-using namespace cv;
-using namespace std;
+int main() {
+    // Load the image
+    cv::Mat image = cv::imread("profile.jpg");
 
-
-
-int energia () {
-    return 0;
-}
-
-int main(int argc, char** argv) {
-    if (argc != 2) {
-        cout << "Uso: " << argv[0] << " <ruta_de_la_imagen>" << endl;
+    // Check if the image was loaded successfully
+    if (image.empty()) {
+        std::cerr << "Error: Could not open or find the image!" << std::endl;
         return -1;
     }
 
-    // Leer imagen
-    Mat imagen = imread(argv[1]);
+    // Create a window and display the image
+    cv::namedWindow("Profile Image", cv::WINDOW_AUTOSIZE);
+    cv::imshow("Profile Image", image);
 
-    // Verificar si la imagen se cargó correctamente
-    if (imagen.empty()) {
-        cout << "Error: No se pudo cargar la imagen." << endl;
-        return -1;
-    }
+    // Wait for a key press indefinitely
+    cv::waitKey(0);
 
-    // Mostrar la imagen en una ventana
-    imshow("Imagen Cargada", imagen);
-
-    // Esperar una tecla para cerrar la ventana
-    waitKey(0);
-
+    // Close all OpenCV windows
+    cv::destroyAllWindows();
     return 0;
 }
