@@ -1,17 +1,7 @@
-struct Pixel {
-    unsigned char red;
-    unsigned char green;
-    unsigned char blue;
-};
+#include "auxOpenCV.hpp"
 
-struct image {
-    int width;
-    int height;
-    std::vector<std::vector<Pixel>> pixels;
-};
-
-image matToImage(const cv::Mat& mat) {
-    image img;
+Image matToImage(const cv::Mat& mat) {
+    Image img;
     img.width = mat.cols;
     img.height = mat.rows;
     img.pixels.resize(img.height, std::vector<Pixel>(img.width));
@@ -27,12 +17,11 @@ image matToImage(const cv::Mat& mat) {
     return img;
 }
 
-cv::Mat imageToMat(const image& img) {
+cv::Mat imageToMat(const Image& img) {
     cv::Mat mat(img.height, img.width, CV_8UC3);
     for (int i = 0; i < img.height; i++) {
         for (int j = 0; j < img.width; j++) {
             const Pixel &p = img.pixels[i][j];
-            // OpenCV uses BGR order.
             mat.at<cv::Vec3b>(i, j) = cv::Vec3b(p.blue, p.green, p.red);
         }
     }

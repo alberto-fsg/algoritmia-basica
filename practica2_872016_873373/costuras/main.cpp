@@ -1,24 +1,28 @@
 #include <opencv2/opencv.hpp>
 #include <iostream>
+#include "auxOpenCV.hpp"
+#include "costuras.hpp"
 
 int main() {
-    // Load the image
-    cv::Mat image = cv::imread("profile.jpg");
+    cv::Mat mat = cv::imread("profile.jpg");
 
-    // Check if the image was loaded successfully
-    if (image.empty()) {
+    if (mat.empty()) {
         std::cerr << "Error: Could not open or find the image!" << std::endl;
         return -1;
     }
 
-    // Create a window and display the image
-    cv::namedWindow("Profile Image", cv::WINDOW_AUTOSIZE);
-    cv::imshow("Profile Image", image);
+    // Convertir Mat a Image
+    Image img = matToImage(mat);
 
-    // Wait for a key press indefinitely
+    // Algoritmo
+    algoritmo(img, 10);
+
+    // Convertir Image a Mat
+    cv::Mat convertedMat = imageToMat(img);
+
+    // Mostrar Mat convertida
+    cv::imshow("Converted Image", convertedMat);
     cv::waitKey(0);
 
-    // Close all OpenCV windows
-    cv::destroyAllWindows();
     return 0;
 }
