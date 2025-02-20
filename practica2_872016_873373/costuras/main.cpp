@@ -3,25 +3,33 @@
 #include "auxOpenCV.hpp"
 #include "costuras.hpp"
 
-int main() {
-    cv::Mat mat = cv::imread("profile.jpg");
+int main(int argc, char* argv[]) {
+    if (argc < 3) {
+        std::cerr << "Uso: " << argv[0] << " <ruta_imagen> <n_columnas>" << std::endl;
+        return -1;
+    }
+
+    std::string nombre_archivo = argv[1];
+    int n_columnas = std::stoi(argv[2]);
+
+    cv::Mat mat = cv::imread(nombre_archivo);
 
     if (mat.empty()) {
-        std::cerr << "Error: Could not open or find the image!" << std::endl;
+        std::cerr << "Error: No se pudo abrir o encontrar la imagen!" << std::endl;
         return -1;
     }
 
     // Convertir Mat a Image
     Image img = matToImage(mat);
 
-    // Algoritmo
-    algoritmo(img, 10);
+    // Aplicar algoritmo
+    algoritmo(img, n_columnas);
 
     // Convertir Image a Mat
-    cv::Mat convertedMat = imageToMat(img);
+    cv::Mat matConvertida = imageToMat(img);
 
-    // Mostrar Mat convertida
-    cv::imshow("Converted Image", convertedMat);
+    // Mostrar la imagen convertida
+    cv::imshow("Imagen Convertida", matConvertida);
     cv::waitKey(0);
 
     return 0;

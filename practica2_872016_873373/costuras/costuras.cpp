@@ -2,17 +2,16 @@
 #include <cmath>
 #include <list>
 #include "costuras.hpp"
-#include "auxOpenCV.hpp"
 
 using namespace std;
 
-int brillo(int i, int j, const image& img) {
+int brillo(int i, int j, const Image& img) {
     if (i < 0 || j < 0 || img.width <= i || img.height <= j)
         return 0;
     return img.pixels[j][i].red + img.pixels[j][i].blue + img.pixels[j][i].green;
 }
 
-int obtenerEnergia(int i, int j, const image& img) {
+int obtenerEnergia(int i, int j, const Image& img) {
     int energiax = 0, energiay = 0;
 
     // Cálculo en la dirección horizontal
@@ -26,7 +25,7 @@ int obtenerEnergia(int i, int j, const image& img) {
     return static_cast<int>(sqrt(energiax * energiax + energiay * energiay));
 }
 
-int obtenerCosturaRecursiva(int i, int j, const image& img, vector<vector<int>>& tablaCostes, vector<vector<bool>>& costesCalculados) {
+int obtenerCosturaRecursiva(int i, int j, const Image& img, vector<vector<int>>& tablaCostes, vector<vector<bool>>& costesCalculados) {
     if(costesCalculados[j][i])
         return tablaCostes[j][i];
     
@@ -48,7 +47,7 @@ int obtenerCosturaRecursiva(int i, int j, const image& img, vector<vector<int>>&
     return coste;
 }
 
-pair<int, int> obtenerSiguientePixel(const image& img, int fila, int col) {
+pair<int, int> obtenerSiguientePixel(const Image& img, int fila, int col) {
     if (fila >= img.height - 1)
         return {-1, -1};
 
@@ -74,7 +73,7 @@ pair<int, int> obtenerSiguientePixel(const image& img, int fila, int col) {
     return {fila + 1, nuevaCol};
 }
 
-vector<int> obtenerCostura(image& img) {
+vector<int> obtenerCostura(Image& img) {
     vector<vector<int>> tablaCostes(img.height, vector<int>(img.width, 0));
     vector<vector<bool>> costesCalculados(img.height, vector<bool>(img.width, false));
 
