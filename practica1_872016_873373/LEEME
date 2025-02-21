@@ -8,6 +8,7 @@
     │   ├── abb.hpp
     │   └── main.cpp
     ├── LEEME
+    ├── informe.pdf                                 // Informe con análisis de resultados  
     └── pruebas                                     // Ficheros de prueba
         ├── test_binario01.bin
         ├── test_binario02.exe
