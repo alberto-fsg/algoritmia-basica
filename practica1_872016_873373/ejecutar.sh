@@ -57,11 +57,11 @@ g++ "${DIR_FUENTES}/main.cpp" "${DIR_FUENTES}/abb.cpp" -o huf
 
 # Tests
 compare_hashes "${DIR_FICHERO}/test_corto01.txt" \
-    "Fichero .txt vacío" \
+    "Fichero .txt corto 1" \
     "./huf -c ${DIR_FICHERO}/test_corto01.txt"
 
 compare_hashes "${DIR_FICHERO}/test_corto02.txt" \
-    "Fichero .txt corto" \
+    "Fichero .txt corto 2" \
     "./huf -c ${DIR_FICHERO}/test_corto02.txt"
 
 compare_hashes "${DIR_FICHERO}/test_largo01.txt" \
