@@ -13,9 +13,9 @@
         ├── low_freq.txt
         └── quijote.txt
 2. Instrucciones de compilación y ejecución.
-    - compilación: g++ huf/main.cpp huf/abb.cpp -o huf
+    - compilación: g++ huffman/main.cpp huffman/abb.cpp -o huf
     - compresión de <fichero>: ./huf -c <fichero>
     - descompresión de <fichero.huf>: ./huf -d <fichero.huf>
-    - compresión de <fichero> con límite <n>: ./huf -c -l <n> <fichero> 
+    - compresión de <fichero> con límite <n>: ./huf -l <n> -c <fichero> 
 3. Instrucciones para repetir las pruebas.
     ./ejecutar.sh

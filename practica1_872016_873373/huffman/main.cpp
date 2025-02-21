@@ -1,9 +1,11 @@
 #include <unordered_map>
 #include <algorithm>
 #include <iostream>
+#include <iomanip>
 #include <fstream>
 #include <string>
 #include <vector>
+#include <chrono>
 #include <queue>
 #include <cmath>
 #include <set>
@@ -367,11 +369,23 @@ int main(int argc, char** argv) {
     if(argc < 3)
         return mostrarError();
 
+    string accion;
+
     string comando = argv[1];
     if(comando.compare("-d") == 0) {
+        auto ini = chrono::high_resolution_clock::now();
         descompactar(argv[2]);
+        auto fin = chrono::high_resolution_clock::now();
+        chrono::duration<double, milli> duracion = fin - ini;
+        cout << "Tiempo de ejecucion para descomprimir: " 
+             << fixed << setprecision(3) << duracion.count() << " ms\n" << endl;
     } else if(comando.compare("-c") == 0) {
+        auto ini = chrono::high_resolution_clock::now();
         compactar(argv[2]);
+        auto fin = chrono::high_resolution_clock::now();
+        chrono::duration<double, milli> duracion = fin - ini;
+        cout << "Tiempo de ejecucion para comprimir: " 
+             << fixed << setprecision(3) << duracion.count() << " ms\n" << endl;
     } else if(comando.compare("-l") == 0) {
         if(argc < 5)
             return mostrarError();
@@ -383,7 +397,12 @@ int main(int argc, char** argv) {
             return mostrarError();
         }
         if(string(argv[3]).compare("-c") == 0) {
+            auto ini = chrono::high_resolution_clock::now();
             compactar(argv[4], true, lim);
+            auto fin = chrono::high_resolution_clock::now();
+            chrono::duration<double, milli> duracion = fin - ini;
+            cout << "Tiempo de ejecucion para comprimir: " 
+                 << fixed << setprecision(3) << duracion.count() << " ms\n" << endl;
         } else {
             return mostrarError();
         }

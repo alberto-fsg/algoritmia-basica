@@ -56,11 +56,53 @@ echo 'Compilando programa...'
 g++ "${DIR_FUENTES}/main.cpp" "${DIR_FUENTES}/abb.cpp" -o huf
 
 # Tests
-compare_hashes "${DIR_FICHERO}/quijote.txt" "1 - [pruebas/quijote.txt] Fichero .txt largo en castellano" "./huf -c ${DIR_FICHERO}/quijote.txt"
-compare_hashes "${DIR_FICHERO}/bible.txt" "2 - [pruebas/bible.txt] Fichero .txt largo en inglés" "./huf -c ${DIR_FICHERO}/bible.txt"
-compare_hashes "${DIR_FICHERO}/test_low_freq.txt" "3 - [pruebas/low_freq] Fichero .txt pequeño con número significativo de símbolos de baja frecuencia" "./huf -c ${DIR_FICHERO}/low_freq.txt"
-compare_hashes "${DIR_FICHERO}/test_low_freq.txt" "4 - [pruebas/low_freq] Fichero .txt pequeño con número significativo de símbolos de baja frecuencia con límite de profundidad apropiado" "./huf -l 3 -c ${DIR_FICHERO}/low_freq.txt"
-compare_hashes "${DIR_FICHERO}/test_low_freq.txt" "5 - [huf] Fichero binario" "./huf -c ${DIR_FICHERO}/../huf"
+compare_hashes "${DIR_FICHERO}/test_corto01.txt" \
+    "Fichero .txt vacío" \
+    "./huf -c ${DIR_FICHERO}/test_corto01.txt"
+
+compare_hashes "${DIR_FICHERO}/test_corto02.txt" \
+    "Fichero .txt corto" \
+    "./huf -c ${DIR_FICHERO}/test_corto02.txt"
+
+compare_hashes "${DIR_FICHERO}/test_largo01.txt" \
+    "Fichero .txt largo: Biblia en inglés" \
+    "./huf -c ${DIR_FICHERO}/test_largo01.txt"
+
+compare_hashes "${DIR_FICHERO}/test_largo02.txt" \
+    "Fichero .txt largo: El Quijote en español" \
+    "./huf -c ${DIR_FICHERO}/test_largo02.txt"
+
+compare_hashes "${DIR_FICHERO}/test_caracterEsFrecuente.txt" \
+    "Fichero .txt en el que un carácter tiene más frecuencia de aparición que el resto" \
+    "./huf -c ${DIR_FICHERO}/test_caracterEsFrecuente.txt"
+
+compare_hashes "${DIR_FICHERO}/test_caracterEsFrecuente.txt" \
+    "Fichero .txt en el que un carácter tiene más frecuencia de aparición que el resto (con profundidad limitada)" \
+    "./huf -l 3 -c ${DIR_FICHERO}/test_caracterEsFrecuente.txt"
+
+compare_hashes "${DIR_FICHERO}/test_caracterNoFrecuente.txt" \
+    "Fichero .txt en el que un carácter tiene menos frecuencia de aparición que el resto" \
+    "./huf -c ${DIR_FICHERO}/test_caracterNoFrecuente.txt"
+
+compare_hashes "${DIR_FICHERO}/test_caracterNoFrecuente.txt" \
+    "Fichero .txt en el que un carácter tiene menos frecuencia de aparición que el resto (con profundidad limitada)" \
+    "./huf -l 3 -c ${DIR_FICHERO}/test_caracterNoFrecuente.txt"
+
+compare_hashes "${DIR_FICHERO}/test_numAparicionesParecidas.txt" \
+    "Fichero .txt en el que todos los carácteres tienen misma frecuencia" \
+    "./huf -c ${DIR_FICHERO}/test_numAparicionesParecidas.txt"
+
+compare_hashes "${DIR_FICHERO}/test_numAparicionesParecidas.txt" \
+    "Fichero .txt en el que todos los carácteres tienen misma frecuencia (con profundidad limitada)" \
+    "./huf -l 3 -c ${DIR_FICHERO}/test_numAparicionesParecidas.txt"
+
+compare_hashes "${DIR_FICHERO}/test_binario01.bin" \
+    "Fichero binario .bin" \
+    "./huf -c ${DIR_FICHERO}/test_binario01.bin"
+
+compare_hashes "${DIR_FICHERO}/test_binario02.exe" \
+    "Fichero binario .exe de programa ¡Hola, mundo! en C++" \
+    "./huf -c ${DIR_FICHERO}/test_binario02.exe"
 
 # Limpiar .huf
 echo
