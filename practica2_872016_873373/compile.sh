@@ -50,14 +50,13 @@ spinner &
 spinner_pid=$!
 
 cd ${raiz}
-g++ -O2 -std=c++11 -Iinclude \
+g++ -static -O2 -std=c++11 -Iinclude \
     -Ilibs/include \
     -o costuras \
     src/costuras/main.cpp \
     src/costuras/gestorImg.cpp \
     src/costuras/costuras.cpp \
     -Llibs/lib \
-    -Wl,-rpath=libs/lib \
     -lpng -ljpeg -lz
 
 kill "$spinner_pid" > /dev/null 2>&1
