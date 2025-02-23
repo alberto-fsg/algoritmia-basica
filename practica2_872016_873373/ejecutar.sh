@@ -1,13 +1,13 @@
 #!/bin/bash
 
-DIR_FUENTES='./costuras'
-g++ ${DIR_FUENTES}/main.cpp ${DIR_FUENTES}/auxOpenCV.cpp ${DIR_FUENTES}/costuras.cpp -o main `pkg-config --cflags --libs opencv4`
+if [ ! -e costuras ]; then
+    ./clean.sh > /dev/null 2>&1
+    ./compile.sh
+fi
 
 DIR_PRUEBAS='./pruebas'
-# PRESIONAR CUALQUIER TECLA PARA SALTAR IMAGENES
-./main ${DIR_PRUEBAS}/profile.jpg 0
-./main ${DIR_PRUEBAS}/profile.jpg 50
-./main ${DIR_PRUEBAS}/profile.jpg 150
-./main ${DIR_PRUEBAS}/profile.jpg 450
 
-./clean.sh
+./costuras ${DIR_PRUEBAS}/profile.jpg 0   ${DIR_PRUEBAS}/resultados
+./costuras ${DIR_PRUEBAS}/profile.jpg 50  ${DIR_PRUEBAS}/resultados
+./costuras ${DIR_PRUEBAS}/profile.jpg 150 ${DIR_PRUEBAS}/resultados
+./costuras ${DIR_PRUEBAS}/profile.jpg 450 ${DIR_PRUEBAS}/resultados
