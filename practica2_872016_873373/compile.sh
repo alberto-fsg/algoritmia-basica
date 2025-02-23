@@ -57,6 +57,7 @@ g++ -O2 -std=c++11 -Iinclude \
     src/costuras/gestorImg.cpp \
     src/costuras/costuras.cpp \
     -Llibs/lib \
+    -Wl,-rpath=libs/lib \
     -lpng -ljpeg -lz
 
 kill "$spinner_pid" > /dev/null 2>&1
