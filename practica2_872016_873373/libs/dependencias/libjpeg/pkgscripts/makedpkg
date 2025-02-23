@@ -100,14 +100,14 @@ makedeb()
 PKGNAME=libjpeg-turbo
 VERSION=3.1.0
 DEBARCH=amd64
-PREFIX=/home/a872016/algoritmia_basica/practica2_872016_873373/libs
-BINDIR=/home/a872016/algoritmia_basica/practica2_872016_873373/libs/bin
-DATAROOTDIR=/home/a872016/algoritmia_basica/practica2_872016_873373/libs/share
-DOCDIR=/home/a872016/algoritmia_basica/practica2_872016_873373/libs/share/doc/libjpeg-turbo
-INCLUDEDIR=/home/a872016/algoritmia_basica/practica2_872016_873373/libs/include
+PREFIX=/home/jorge/Escritorio/algoritmia_basica/algoritmia-basica/practica2_872016_873373/libs
+BINDIR=/home/jorge/Escritorio/algoritmia_basica/algoritmia-basica/practica2_872016_873373/libs/bin
+DATAROOTDIR=/home/jorge/Escritorio/algoritmia_basica/algoritmia-basica/practica2_872016_873373/libs/share
+DOCDIR=/home/jorge/Escritorio/algoritmia_basica/algoritmia-basica/practica2_872016_873373/libs/share/doc/libjpeg-turbo
+INCLUDEDIR=/home/jorge/Escritorio/algoritmia_basica/algoritmia-basica/practica2_872016_873373/libs/include
 JAVADIR=
-LIBDIR=/home/a872016/algoritmia_basica/practica2_872016_873373/libs/lib64
-MANDIR=/home/a872016/algoritmia_basica/practica2_872016_873373/libs/share/man
+LIBDIR=/home/jorge/Escritorio/algoritmia_basica/algoritmia-basica/practica2_872016_873373/libs/lib
+MANDIR=/home/jorge/Escritorio/algoritmia_basica/algoritmia-basica/practica2_872016_873373/libs/share/man
 
 if [ ! `uid` -eq 0 ]; then
 	SUDO=sudo

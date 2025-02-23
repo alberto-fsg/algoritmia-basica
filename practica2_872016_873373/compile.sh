@@ -61,4 +61,4 @@ g++ -O2 -std=c++11 -Iinclude \
 
 kill "$spinner_pid" > /dev/null 2>&1
 wait "$spinner_pid" > /dev/null 2>&1
-echo -ne "\rFin            \n"
+echo -ne "\rPROGRAMA COMPILADO :)\n"

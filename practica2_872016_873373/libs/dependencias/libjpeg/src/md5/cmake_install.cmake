@@ -1,8 +1,8 @@
-# Install script for directory: /home/a872016/algoritmia_basica/practica2_872016_873373/libs/dependencias/libjpeg/src/md5
+# Install script for directory: /home/jorge/Escritorio/algoritmia_basica/algoritmia-basica/practica2_872016_873373/libs/dependencias/libjpeg/src/md5
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "/home/a872016/algoritmia_basica/practica2_872016_873373/libs")
+  set(CMAKE_INSTALL_PREFIX "/home/jorge/Escritorio/algoritmia_basica/algoritmia-basica/practica2_872016_873373/libs")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 
@@ -29,7 +29,7 @@ endif()
 
 # Install shared libraries without execute permission?
 if(NOT DEFINED CMAKE_INSTALL_SO_NO_EXE)
-  set(CMAKE_INSTALL_SO_NO_EXE "0")
+  set(CMAKE_INSTALL_SO_NO_EXE "1")
 endif()
 
 # Is this installation the result of a crosscompile?

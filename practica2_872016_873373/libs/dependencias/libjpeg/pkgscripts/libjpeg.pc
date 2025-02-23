@@ -1,7 +1,7 @@
-prefix=/home/a872016/algoritmia_basica/practica2_872016_873373/libs
-exec_prefix=/home/a872016/algoritmia_basica/practica2_872016_873373/libs
-libdir=/home/a872016/algoritmia_basica/practica2_872016_873373/libs/lib64
-includedir=/home/a872016/algoritmia_basica/practica2_872016_873373/libs/include
+prefix=/home/jorge/Escritorio/algoritmia_basica/algoritmia-basica/practica2_872016_873373/libs
+exec_prefix=/home/jorge/Escritorio/algoritmia_basica/algoritmia-basica/practica2_872016_873373/libs
+libdir=/home/jorge/Escritorio/algoritmia_basica/algoritmia-basica/practica2_872016_873373/libs/lib
+includedir=/home/jorge/Escritorio/algoritmia_basica/algoritmia-basica/practica2_872016_873373/libs/include
 
 Name: libjpeg
 Description: A SIMD-accelerated JPEG codec that provides the libjpeg API

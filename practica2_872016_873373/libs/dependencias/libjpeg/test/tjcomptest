@@ -20,9 +20,9 @@ runme()
 	"$@"
 }
 
-IMGDIR=/home/a872016/algoritmia_basica/practica2_872016_873373/libs/dependencias/libjpeg/testimages
+IMGDIR=/home/jorge/Escritorio/algoritmia_basica/algoritmia-basica/practica2_872016_873373/libs/dependencias/libjpeg/testimages
 OUTDIR=`mktemp -d /tmp/__tjcomptest_output.XXXXXX`
-EXEDIR=/home/a872016/algoritmia_basica/practica2_872016_873373/libs/dependencias/libjpeg
+EXEDIR=/home/jorge/Escritorio/algoritmia_basica/algoritmia-basica/practica2_872016_873373/libs/dependencias/libjpeg
 JAVA=""
 JAVAARGS="-cp $EXEDIR/java/turbojpeg.jar -Djava.library.path=$EXEDIR"
 TJCOMP=$EXEDIR/tjcomp
