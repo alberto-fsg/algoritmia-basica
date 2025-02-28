@@ -25,14 +25,14 @@ PKGNAME=libjpeg-turbo
 VERSION=3.1.0
 ARCH=x86_64
 OS=Linux
-PREFIX=/home/jorge/Escritorio/algoritmia_basica/algoritmia-basica/practica2_872016_873373/libs
+PREFIX=/home/alberto/Universidad/algoritmia-basica/practicas/algoritmia-basica/practica2_872016_873373/libs
 
 umask 022
 rm -f $PKGNAME-$VERSION-$OS-$ARCH.tar.bz2
 TMPDIR=`mktemp -d /tmp/$PKGNAME-build.XXXXXX`
 mkdir -p $TMPDIR/install
 
-DESTDIR=$TMPDIR/install /usr/bin/gmake install
+DESTDIR=$TMPDIR/install /usr/bin/make install
 echo tartest >$TMPDIR/tartest
 GNUTAR=0
 BSDTAR=0

@@ -22,9 +22,9 @@ runme()
 IMAGE=vgl_6548_0026a.bmp
 WIDTH=128
 HEIGHT=95
-IMGDIR=/home/jorge/Escritorio/algoritmia_basica/algoritmia-basica/practica2_872016_873373/libs/dependencias/libjpeg/testimages
+IMGDIR=/home/alberto/Universidad/algoritmia-basica/practicas/algoritmia-basica/practica2_872016_873373/libs/dependencias/libjpeg/testimages
 OUTDIR=`mktemp -d /tmp/__croptest_output.XXXXXX`
-EXEDIR=/home/jorge/Escritorio/algoritmia_basica/algoritmia-basica/practica2_872016_873373/libs/dependencias/libjpeg
+EXEDIR=/home/alberto/Universidad/algoritmia-basica/practicas/algoritmia-basica/practica2_872016_873373/libs/dependencias/libjpeg
 
 if [ -d $OUTDIR ]; then
 	rm -rf $OUTDIR

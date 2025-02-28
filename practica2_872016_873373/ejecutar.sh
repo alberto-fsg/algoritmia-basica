@@ -5,9 +5,11 @@ if [ ! -e costuras ]; then
     ./compile.sh
 fi
 
-DIR_PRUEBAS='./pruebas'
+DIR_PRUEBAS='pruebas'
+OUTPUT_DIR="/tmp/${DIR_PRUEBAS}/resultados"
 
-./costuras ${DIR_PRUEBAS}/profile.jpg 0   ${DIR_PRUEBAS}/resultados
-./costuras ${DIR_PRUEBAS}/profile.jpg 50  ${DIR_PRUEBAS}/resultados
-./costuras ${DIR_PRUEBAS}/profile.jpg 150 ${DIR_PRUEBAS}/resultados
-./costuras ${DIR_PRUEBAS}/profile.jpg 450 ${DIR_PRUEBAS}/resultados
+# Crear directorio de salida si no existe
+mkdir -p "$OUTPUT_DIR"
+
+# Ejecutar el comando
+./costuras "${DIR_PRUEBAS}/profile.jpg" 150 "$OUTPUT_DIR"

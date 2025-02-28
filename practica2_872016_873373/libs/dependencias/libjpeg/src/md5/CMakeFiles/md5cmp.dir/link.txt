@@ -1,1 +1,1 @@
-/usr/bin/cc -O3 -DNDEBUG CMakeFiles/md5cmp.dir/md5cmp.c.o CMakeFiles/md5cmp.dir/md5.c.o CMakeFiles/md5cmp.dir/md5hl.c.o -o ../../test/md5cmp 
+/usr/bin/cc -O3 -DNDEBUG -Wl,--dependency-file=CMakeFiles/md5cmp.dir/link.d CMakeFiles/md5cmp.dir/md5cmp.c.o CMakeFiles/md5cmp.dir/md5.c.o CMakeFiles/md5cmp.dir/md5hl.c.o -o ../../test/md5cmp

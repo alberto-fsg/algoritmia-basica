@@ -1,10 +1,10 @@
 %global _docdir %{_defaultdocdir}/%{name}-%{version}
-%define _prefix  /home/jorge/Escritorio/algoritmia_basica/algoritmia-basica/practica2_872016_873373/libs
-%define _bindir  /home/jorge/Escritorio/algoritmia_basica/algoritmia-basica/practica2_872016_873373/libs/bin
-%define _datarootdir  /home/jorge/Escritorio/algoritmia_basica/algoritmia-basica/practica2_872016_873373/libs/share
-%define _includedir  /home/jorge/Escritorio/algoritmia_basica/algoritmia-basica/practica2_872016_873373/libs/include
+%define _prefix  /home/alberto/Universidad/algoritmia-basica/practicas/algoritmia-basica/practica2_872016_873373/libs
+%define _bindir  /home/alberto/Universidad/algoritmia-basica/practicas/algoritmia-basica/practica2_872016_873373/libs/bin
+%define _datarootdir  /home/alberto/Universidad/algoritmia-basica/practicas/algoritmia-basica/practica2_872016_873373/libs/share
+%define _includedir  /home/alberto/Universidad/algoritmia-basica/practicas/algoritmia-basica/practica2_872016_873373/libs/include
 %define _javadir  
-%define _mandir  /home/jorge/Escritorio/algoritmia_basica/algoritmia-basica/practica2_872016_873373/libs/share/man
+%define _mandir  /home/alberto/Universidad/algoritmia-basica/practicas/algoritmia-basica/practica2_872016_873373/libs/share/man
 %define _enable_static  1
 %define _enable_shared  0
 %define _with_turbojpeg  1
@@ -36,7 +36,7 @@
 %endif
 %endif
 #-->%else
-%define _libdir  /home/jorge/Escritorio/algoritmia_basica/algoritmia-basica/practica2_872016_873373/libs/lib
+%define _libdir  /home/alberto/Universidad/algoritmia-basica/practicas/algoritmia-basica/practica2_872016_873373/libs/lib64
 #-->%endif
 
 Summary: A SIMD-accelerated JPEG codec that provides both the libjpeg and TurboJPEG APIs
@@ -46,7 +46,7 @@ Vendor: The libjpeg-turbo Project
 URL: https://libjpeg-turbo.org
 Group: System Environment/Libraries
 #-->Source0: https://github.com/libjpeg-turbo/libjpeg-turbo/releases/download/%{version}/libjpeg-turbo-%{version}.tar.gz
-Release: 20250223
+Release: 20250228
 License: BSD-style
 BuildRoot: %{_blddir}/%{name}-buildroot-%{version}-%{release}
 Requires: /sbin/ldconfig
@@ -108,7 +108,7 @@ reference implementation of the JPEG standard.
 
 %install
 rm -rf $RPM_BUILD_ROOT
-DESTDIR=$RPM_BUILD_ROOT /usr/bin/gmake install
+DESTDIR=$RPM_BUILD_ROOT /usr/bin/make install
 /sbin/ldconfig -n $RPM_BUILD_ROOT%{_libdir}
 
 #-->%if 0
@@ -143,14 +143,14 @@ safedirmove ()
 	return 0
 }
 
-LJT_DOCDIR=/home/jorge/Escritorio/algoritmia_basica/algoritmia-basica/practica2_872016_873373/libs/share/doc/libjpeg-turbo
+LJT_DOCDIR=/home/alberto/Universidad/algoritmia-basica/practicas/algoritmia-basica/practica2_872016_873373/libs/share/doc/libjpeg-turbo
 if [ ! "$LJT_DOCDIR" = "%{_docdir}" ]; then
 	safedirmove $RPM_BUILD_ROOT/$LJT_DOCDIR $RPM_BUILD_ROOT/%{_docdir} $RPM_BUILD_ROOT/__tmpdoc
 fi
 
 #-->%endif
 
-LJT_DOCDIR=/home/jorge/Escritorio/algoritmia_basica/algoritmia-basica/practica2_872016_873373/libs/share/doc/libjpeg-turbo
+LJT_DOCDIR=/home/alberto/Universidad/algoritmia-basica/practicas/algoritmia-basica/practica2_872016_873373/libs/share/doc/libjpeg-turbo
 if [ "%{_prefix}" = "/opt/libjpeg-turbo" -a "$LJT_DOCDIR" = "/opt/libjpeg-turbo/doc" ]; then
 	ln -fs %{_docdir} $RPM_BUILD_ROOT/$LJT_DOCDIR
 fi

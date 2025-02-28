@@ -1,6 +1,7 @@
 file(REMOVE_RECURSE
   "../../test/md5cmp"
   "../../test/md5cmp.pdb"
+  "CMakeFiles/md5cmp.dir/link.d"
   "CMakeFiles/md5cmp.dir/md5.c.o"
   "CMakeFiles/md5cmp.dir/md5.c.o.d"
   "CMakeFiles/md5cmp.dir/md5cmp.c.o"

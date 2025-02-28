@@ -1,6 +1,7 @@
 file(REMOVE_RECURSE
   "../../test/md5sum"
   "../../test/md5sum.pdb"
+  "CMakeFiles/md5sum.dir/link.d"
   "CMakeFiles/md5sum.dir/md5.c.o"
   "CMakeFiles/md5sum.dir/md5.c.o.d"
   "CMakeFiles/md5sum.dir/md5hl.c.o"

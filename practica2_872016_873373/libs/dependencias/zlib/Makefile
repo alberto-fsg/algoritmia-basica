@@ -41,7 +41,7 @@ TAR=tar
 SHELL=/bin/sh
 EXE=
 
-prefix =/home/jorge/Escritorio/algoritmia_basica/algoritmia-basica/practica2_872016_873373/libs
+prefix =/home/alberto/Universidad/algoritmia-basica/practicas/algoritmia-basica/practica2_872016_873373/libs
 exec_prefix =${prefix}
 libdir =${exec_prefix}/lib
 sharedlibdir =${libdir}

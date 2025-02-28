@@ -21,9 +21,9 @@ runme()
 
 EXT=bmp
 IMAGES="vgl_5674_0098.${EXT} vgl_6434_0018a.${EXT} vgl_6548_0026a.${EXT} shira_bird8.${EXT}"
-IMGDIR=/home/jorge/Escritorio/algoritmia_basica/algoritmia-basica/practica2_872016_873373/libs/dependencias/libjpeg/testimages
+IMGDIR=/home/alberto/Universidad/algoritmia-basica/practicas/algoritmia-basica/practica2_872016_873373/libs/dependencias/libjpeg/testimages
 OUTDIR=`mktemp -d /tmp/__tjbenchtest_output.XXXXXX`
-EXEDIR=/home/jorge/Escritorio/algoritmia_basica/algoritmia-basica/practica2_872016_873373/libs/dependencias/libjpeg
+EXEDIR=/home/alberto/Universidad/algoritmia-basica/practicas/algoritmia-basica/practica2_872016_873373/libs/dependencias/libjpeg
 JAVA=""
 JAVAARGS="-cp $EXEDIR/java/turbojpeg.jar -Djava.library.path=$EXEDIR"
 TJBENCH=$EXEDIR/tjbench

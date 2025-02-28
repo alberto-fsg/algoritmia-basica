@@ -67,7 +67,7 @@ makedeb()
 	mkdir $TMPDIR/DEBIAN
 
 	if [ $SUPPLEMENT = 1 ]; then
-		DESTDIR=$TMPDIR /usr/bin/gmake install
+		DESTDIR=$TMPDIR /usr/bin/make install
 		rm -rf $TMPDIR$BINDIR
 		if [ "$DATAROOTDIR" != "$PREFIX" ]; then
 			rm -rf $TMPDIR$DATAROOTDIR
@@ -79,7 +79,7 @@ makedeb()
 		rm -rf $TMPDIR$INCLUDEDIR
 		rm -rf $TMPDIR$MANDIR
 	else
-		DESTDIR=$TMPDIR /usr/bin/gmake install
+		DESTDIR=$TMPDIR /usr/bin/make install
 		if [ "$PREFIX" = "/opt/libjpeg-turbo" -a "$DOCDIR" = "/opt/libjpeg-turbo/doc" ]; then
 			safedirmove $TMPDIR/$DOCDIR $TMPDIR/usr/share/doc/$PKGNAME-$VERSION $TMPDIR/__tmpdoc
 			ln -fs /usr/share/doc/$DIRNAME-$VERSION $TMPDIR$DOCDIR
@@ -100,14 +100,14 @@ makedeb()
 PKGNAME=libjpeg-turbo
 VERSION=3.1.0
 DEBARCH=amd64
-PREFIX=/home/jorge/Escritorio/algoritmia_basica/algoritmia-basica/practica2_872016_873373/libs
-BINDIR=/home/jorge/Escritorio/algoritmia_basica/algoritmia-basica/practica2_872016_873373/libs/bin
-DATAROOTDIR=/home/jorge/Escritorio/algoritmia_basica/algoritmia-basica/practica2_872016_873373/libs/share
-DOCDIR=/home/jorge/Escritorio/algoritmia_basica/algoritmia-basica/practica2_872016_873373/libs/share/doc/libjpeg-turbo
-INCLUDEDIR=/home/jorge/Escritorio/algoritmia_basica/algoritmia-basica/practica2_872016_873373/libs/include
+PREFIX=/home/alberto/Universidad/algoritmia-basica/practicas/algoritmia-basica/practica2_872016_873373/libs
+BINDIR=/home/alberto/Universidad/algoritmia-basica/practicas/algoritmia-basica/practica2_872016_873373/libs/bin
+DATAROOTDIR=/home/alberto/Universidad/algoritmia-basica/practicas/algoritmia-basica/practica2_872016_873373/libs/share
+DOCDIR=/home/alberto/Universidad/algoritmia-basica/practicas/algoritmia-basica/practica2_872016_873373/libs/share/doc/libjpeg-turbo
+INCLUDEDIR=/home/alberto/Universidad/algoritmia-basica/practicas/algoritmia-basica/practica2_872016_873373/libs/include
 JAVADIR=
-LIBDIR=/home/jorge/Escritorio/algoritmia_basica/algoritmia-basica/practica2_872016_873373/libs/lib
-MANDIR=/home/jorge/Escritorio/algoritmia_basica/algoritmia-basica/practica2_872016_873373/libs/share/man
+LIBDIR=/home/alberto/Universidad/algoritmia-basica/practicas/algoritmia-basica/practica2_872016_873373/libs/lib64
+MANDIR=/home/alberto/Universidad/algoritmia-basica/practicas/algoritmia-basica/practica2_872016_873373/libs/share/man
 
 if [ ! `uid` -eq 0 ]; then
 	SUDO=sudo

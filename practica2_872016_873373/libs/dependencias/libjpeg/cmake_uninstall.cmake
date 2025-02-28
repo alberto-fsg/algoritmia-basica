@@ -1,10 +1,10 @@
 # This code is from the CMake FAQ
 
-if (NOT EXISTS "/home/jorge/Escritorio/algoritmia_basica/algoritmia-basica/practica2_872016_873373/libs/dependencias/libjpeg/install_manifest.txt")
-  message(FATAL_ERROR "Cannot find install manifest: \"/home/jorge/Escritorio/algoritmia_basica/algoritmia-basica/practica2_872016_873373/libs/dependencias/libjpeg/install_manifest.txt\"")
-endif(NOT EXISTS "/home/jorge/Escritorio/algoritmia_basica/algoritmia-basica/practica2_872016_873373/libs/dependencias/libjpeg/install_manifest.txt")
+if (NOT EXISTS "/home/alberto/Universidad/algoritmia-basica/practicas/algoritmia-basica/practica2_872016_873373/libs/dependencias/libjpeg/install_manifest.txt")
+  message(FATAL_ERROR "Cannot find install manifest: \"/home/alberto/Universidad/algoritmia-basica/practicas/algoritmia-basica/practica2_872016_873373/libs/dependencias/libjpeg/install_manifest.txt\"")
+endif(NOT EXISTS "/home/alberto/Universidad/algoritmia-basica/practicas/algoritmia-basica/practica2_872016_873373/libs/dependencias/libjpeg/install_manifest.txt")
 
-file(READ "/home/jorge/Escritorio/algoritmia_basica/algoritmia-basica/practica2_872016_873373/libs/dependencias/libjpeg/install_manifest.txt" files)
+file(READ "/home/alberto/Universidad/algoritmia-basica/practicas/algoritmia-basica/practica2_872016_873373/libs/dependencias/libjpeg/install_manifest.txt" files)
 string(REGEX REPLACE "\n" ";" files "${files}")
 list(REVERSE files)
 foreach (file ${files})
