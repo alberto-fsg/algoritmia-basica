@@ -1,9 +1,10 @@
 #include "costuras.hpp"
-
 #include <iostream>
 #include <string>
+#include <CImg.h>
 
 using namespace std;
+using namespace cimg_library;
 
 int main(int argc, char** argv) {
     if (argc < 4) {
@@ -11,14 +12,15 @@ int main(int argc, char** argv) {
         return -1;
     }
 
-    // Obtener parámetros: nombre de la imagen y nº
-    // de columnas que se desea reducir
+    // Obtener parámetros
     string nom = argv[1];
     string dir = argv[3];
-    if(dir[dir.size() - 1] != '/') dir += '/';
+    if(dir.back() != '/') 
+        dir += '/';
     int columnas = stoi(argv[2]);
+    const int SAVE_RATIO = 1; // Guardar cada imagen intermedia
 
-    // Cargar la imagen
+    // Cargar imagen
     CImg<unsigned char> cimg(nom.c_str());
     if(cimg.is_empty()) {
         cerr << "Error: no se pudo cargar la imagen." << endl;
@@ -28,15 +30,13 @@ int main(int argc, char** argv) {
     // Convertir en estructura Image
     Image img = cImgToImage(cimg);
 
-    // Aplicar algoritmo de costura
-    algoritmo(img, columnas);
-
-    // Convertir de Image a CImg
-    CImg<unsigned char> cimgConvertida = imageToCImg(img);
-
-    // Guardar resultado
+    // Procesar y guardar imágenes intermedias
     size_t pos = nom.find_last_of("/\\");
     string nombreArchivo = (pos == string::npos) ? nom : nom.substr(pos + 1);
+    algoritmo(img, columnas, dir, nombreArchivo, SAVE_RATIO);
+
+    // Guardar resultado final
+    CImg<unsigned char> cimgConvertida = imageToCImg(img);
     string nom_nuevo = dir + "minus" + to_string(columnas) + "_" + nombreArchivo;
     cimgConvertida.save(nom_nuevo.c_str());
 

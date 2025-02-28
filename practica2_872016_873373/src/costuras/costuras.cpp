@@ -2,8 +2,10 @@
 #include <cmath>
 #include <list>
 #include "costuras.hpp"
+#include <CImg.h>
 
 using namespace std;
+using namespace cimg_library;
 
 int brillo(int i, int j, const Image& img) {
     if (i < 0 || j < 0 || img.width <= i || img.height <= j)
@@ -108,10 +110,21 @@ void eliminarCostura(Image& img, const vector<int>& costura) {
     img.width--;
 }
 
-void algoritmo(Image& img, int n_columnas) {
-    while (n_columnas != 0) {
+void algoritmo(Image& img, int n_columnas, const string& outputDir, const string& baseName, int saveRatio) {
+    int steps_processed = 0;
+    int original_columns = n_columnas;
+
+    while (n_columnas > 0) {
         vector<int> costura = obtenerCostura(img);
         eliminarCostura(img, costura);
+        steps_processed++;
         n_columnas--;
+
+        // Guardar imagen intermedia según el ratio
+        if (saveRatio > 0 && steps_processed % saveRatio == 0) {
+            CImg<unsigned char> cimg = imageToCImg(img);
+            string filename = outputDir + "intermediate_" + to_string(steps_processed) + "_" + baseName;
+            cimg.save(filename.c_str());
+        }
     }
 }
