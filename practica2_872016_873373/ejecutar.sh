@@ -12,28 +12,25 @@ OUTPUT_DIR="/tmp/${DIR_PRUEBAS}/resultados"
 # Crear directorio principal de salida si no existe
 mkdir -p "$OUTPUT_DIR"
 
-# Procesar profile.jpg
-profile_width=$(identify -format "%w" "${DIR_PRUEBAS}/profile.jpg")
-profile_arg=$((profile_width - 1))
-OUTPUT_PROFILE="${OUTPUT_DIR}/profile"
-mkdir -p "$OUTPUT_PROFILE"
+process_image() {
+    local image_name="$1"
+    local image_path="${DIR_PRUEBAS}/${image_name}"
+    # Nombre sin extensión para crear la carpeta de salida
+    local base_name="${image_name%.*}"
+    local output_folder="${OUTPUT_DIR}/${base_name}"
+    mkdir -p "$output_folder"
+    
+    # Obtener el ancho de la imagen y restarle 1
+    local width=$(identify -format "%w" "$image_path")
+    local width_arg=$((width - 1))
+    
+    # Medir el tiempo de procesamiento
+    local start_time=$(date +%s.%N)
+    ./costuras "$image_path" "$width_arg" "$output_folder"
+    local end_time=$(date +%s.%N)
+    local elapsed=$(echo "$end_time - $start_time" | bc)
+    echo "Procesar ${image_name} ha costado ${elapsed} segundos."
+}
 
-# Medir el tiempo de procesamiento para profile.jpg
-start_profile=$(date +%s.%N)
-./costuras "${DIR_PRUEBAS}/profile.jpg" "$profile_arg" "$OUTPUT_PROFILE"
-end_profile=$(date +%s.%N)
-elapsed_profile=$(echo "$end_profile - $start_profile" | bc)
-echo "El procesamiento de profile.jpg tomó ${elapsed_profile} segundos."
-
-# Procesar ejemplo-enunciado.jpg
-ejemplo_width=$(identify -format "%w" "${DIR_PRUEBAS}/ejemplo-enunciado.jpg")
-ejemplo_arg=$((ejemplo_width - 1))
-OUTPUT_EJEMPLO="${OUTPUT_DIR}/ejemplo-enunciado"
-mkdir -p "$OUTPUT_EJEMPLO"
-
-# Medir el tiempo de procesamiento para ejemplo-enunciado.jpg
-start_ejemplo=$(date +%s.%N)
-./costuras "${DIR_PRUEBAS}/ejemplo-enunciado.jpg" "$ejemplo_arg" "$OUTPUT_EJEMPLO"
-end_ejemplo=$(date +%s.%N)
-elapsed_ejemplo=$(echo "$end_ejemplo - $start_ejemplo" | bc)
-echo "El procesamiento de ejemplo-enunciado.jpg tomó ${elapsed_ejemplo} segundos."
+process_image "profile.jpg"
+process_image "ejemplo-enunciado.jpg"
