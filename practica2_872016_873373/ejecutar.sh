@@ -8,21 +8,15 @@ fi
 
 DIR_PRUEBAS='pruebas'
 BASE_OUTPUT="/tmp"
-ALGO_DIR="${BASE_OUTPUT}/algoritmia-basica"
+USERNAME=$(whoami)  # Obtener el nombre de usuario
+ALGO_DIR="${BASE_OUTPUT}/algoritmia_basica_${USERNAME}"
 OUTPUT_DIR="${ALGO_DIR}/resultados"
 
-# Crear los directorios uno por uno
-if [ ! -d "$BASE_OUTPUT" ]; then
-    mkdir "$BASE_OUTPUT"
-fi
+# Crear los directorios de una sola vez
+mkdir -p "$OUTPUT_DIR"
 
-if [ ! -d "$ALGO_DIR" ]; then
-    mkdir "$ALGO_DIR"
-fi
-
-if [ ! -d "$OUTPUT_DIR" ]; then
-    mkdir "$OUTPUT_DIR"
-fi
+# Imprimir mensaje con el directorio donde se guardarán las imágenes generadas
+echo "Las imágenes generadas se guardarán en: $OUTPUT_DIR"
 
 process_image() {
     local image_name="$1"
@@ -32,9 +26,7 @@ process_image() {
     local output_folder="${OUTPUT_DIR}/${base_name}"
 
     # Crear el subdirectorio de salida si no existe
-    if [ ! -d "$output_folder" ]; then
-        mkdir "$output_folder"
-    fi
+    mkdir -p "$output_folder"
     
     # Obtener el ancho de la imagen y restarle 1
     local width=$(identify -format "%w" "$image_path")
@@ -53,4 +45,4 @@ process_image "prueba1.jpg"
 process_image "prueba2.jpg"
 process_image "prueba3.jpg"
 process_image "prueba4.png"
-process_image "prueba5.png"
+
