@@ -3,20 +3,19 @@
     practica2_872016_873373
     ├── clean.sh
     ├── compile.sh
-    ├── ejecutar.sh
-    ├── include
+    ├── ejecutar.sh // compila, ejecuta y limpia
+    ├── include // directorio con la librería Cimg
     │   └── CImg.h
     ├── informe.pdf
     ├── LEEME
     ├── libs 
-    │   └── dependencias // directorio con la librería de Cimg
+    │   └── dependencias // directorio con las dependencias de la librería de Cimg
     ├── pruebas
     │   ├── prueba1.jpg
     │   ├── prueba2.jpg
     │   ├── prueba3.jpg
     │   ├── prueba4.png
     │   ├── prueba5.png
-    │   └── resultados
     └── src
         └── costuras
             ├── costuras.cpp
@@ -28,7 +27,7 @@
 
 2. Instrucciones de compilación y ejecución.
     - compilación: ./compile.sh
-    - ejecución: ./costuras <path_imagen> <anchura_a_eliminar> <directorio_de_salida>
+    - ejecución: ./costuras <path_imagen> <costuras_a_eliminar> <directorio_de_salida>
 
 3. Instrucciones para repetir las pruebas.
     ./ejecutar.sh
