@@ -1,0 +1,8 @@
+#-----------------------------------------------------#
+# 872016 ->              Jorge Soria Romeo            #
+# 873373 -> Alberto Francisco Solaz García            #
+#.....................................................#
+# Descripción general del directorio: organización,   #
+# instrucciones de instalación, compilación y ejecu-  #  
+# ción e instrucciones para repetir las pruebas       #
+#-----------------------------------------------------#
