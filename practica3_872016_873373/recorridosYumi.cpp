@@ -21,7 +21,7 @@ unsigned int manhattan(const Coord& c1, const Coord& c2) {
 /**
  * Posibles movimientos del robot YuMi
  */
-enum movimiento {IZQIERDA, DERECHA, ARRIBA, ABAJO};
+enum movimiento {IZQUIERDA, DERECHA, ARRIBA, ABAJO};
 
 /**
  * Algoritmo de búsqueda con retroceso (RECURSIVO) para calcular
@@ -31,14 +31,16 @@ enum movimiento {IZQIERDA, DERECHA, ARRIBA, ABAJO};
 unsigned int nRecorridos_YuMi(bool** cuadricula, unsigned int filas, unsigned int columnas,
         unsigned int casillasEntreReg, const Coord* reg, unsigned int sigReg, Coord pos) {
 
-    if(pos.first == 0 && pos.second == 1) {
+    cuadricula[0][0] = false;
+
+    if(pos.first == 0 && pos.second == 1 && sigReg >= 3) {
         return 1;
     }
 
     // Movimientos posibles
     std::vector<movimiento> movimientos;
     if(pos.second > 0 && cuadricula[pos.first][pos.second - 1]) 
-        movimientos.push_back(IZQIERDA);
+        movimientos.push_back(IZQUIERDA);
     if(pos.second < columnas - 1 && cuadricula[pos.first][pos.second + 1])
         movimientos.push_back(DERECHA);
     if(pos.first > 0 && cuadricula[pos.first - 1][pos.second])
@@ -51,7 +53,7 @@ unsigned int nRecorridos_YuMi(bool** cuadricula, unsigned int filas, unsigned in
     for(movimiento m : movimientos) {
         Coord nuevaPos = pos;
         switch (m) {
-            case IZQIERDA:
+            case IZQUIERDA:
                 nuevaPos.second--; break;
             case DERECHA:
                 nuevaPos.second++; break;
