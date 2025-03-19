@@ -1,88 +1,119 @@
-#include <utility>
-#include <cmath>
+#include <iostream>
+#include <fstream>
 #include <vector>
+#include <string>
 
-typedef std::pair<unsigned int, unsigned int> Coord;
+using namespace std;
 
-/**
- * Dice si dos puntos son iguales
- */
-bool iguales(const Coord& c1, const Coord& c2) {
-    return c1.first == c2.first && c1.second == c2.second;
-}
+enum movimiento {NORTE, SUR, ESTE, OESTE};
 
-/**
- * Distancia Manhattan
- */
-unsigned int manhattan(const Coord& c1, const Coord& c2) {
-    return abs((int)c1.first - (int)c2.first) + abs((int)c1.second - (int)c2.second);
-}
-
-/**
- * Posibles movimientos del robot YuMi
- */
-enum movimiento {IZQUIERDA, DERECHA, ARRIBA, ABAJO};
-
-/**
- * Algoritmo de búsqueda con retroceso (RECURSIVO) para calcular
- * cuántos recorridos diferentes puede hacer YuMi en una zona a
- * reforestar dado su tamaño y los tres puntos de registro.
- */
-unsigned int nRecorridos_YuMi(bool** cuadricula, unsigned int filas, unsigned int columnas,
-        unsigned int casillasEntreReg, const Coord* reg, unsigned int sigReg, Coord pos) {
-
-    cuadricula[0][0] = false;
-
-    if(pos.first == 0 && pos.second == 1 && sigReg >= 3) {
-        return 1;
+unsigned int nRecorridos_YuMi(
+    vector<vector<bool>>& cuadricula,
+    const unsigned int  regsRow[3],
+    const unsigned int  regsCol[3],
+    const unsigned int regsPaso[3],
+    unsigned int  row   = 0,
+    unsigned int  col   = 0,
+    unsigned int paso   = 1,
+    unsigned int sigReg = 0
+) {
+    if(row == 0 && col == 1 && sigReg >= 3 &&
+        paso == cuadricula.size() * cuadricula[0].size()) {
+            return 1;
     }
 
-    // Movimientos posibles
-    std::vector<movimiento> movimientos;
-    if(pos.second > 0 && cuadricula[pos.first][pos.second - 1]) 
-        movimientos.push_back(IZQUIERDA);
-    if(pos.second < columnas - 1 && cuadricula[pos.first][pos.second + 1])
-        movimientos.push_back(DERECHA);
-    if(pos.first > 0 && cuadricula[pos.first - 1][pos.second])
-        movimientos.push_back(ABAJO);
-    if(pos.first < filas - 1 && cuadricula[pos.first + 1][pos.second])
-        movimientos.push_back(ARRIBA);
+    vector<movimiento> movimientos;
+    if (col > 0 && cuadricula[row][col - 1])
+        movimientos.push_back(OESTE);
+    if (row > 0 && cuadricula[row - 1][col])
+        movimientos.push_back(SUR);
+    if (col < cuadricula[0].size() - 1 && cuadricula[row][col + 1])
+        movimientos.push_back(ESTE);
+    if (row < cuadricula.size() - 1 && cuadricula[row + 1][col])
+        movimientos.push_back(NORTE);
 
     unsigned int caminos = 0;
-
+    
     for(movimiento m : movimientos) {
-        Coord nuevaPos = pos;
-        switch (m) {
-            case IZQUIERDA:
-                nuevaPos.second--; break;
-            case DERECHA:
-                nuevaPos.second++; break;
-            case ABAJO:
-                nuevaPos.first--;  break;
-            case ARRIBA:
-                nuevaPos.first++;  break;
+        unsigned int nuevaRow = row;
+        unsigned int nuevaCol = col;
+        switch(m) {
+            case OESTE:
+                nuevaCol = col - 1; break;
+
+            case ESTE:
+                nuevaCol = col + 1; break;
+
+            case SUR:
+                nuevaRow = row - 1; break;
+
+            case NORTE:
+                nuevaRow = row + 1; break;
         }
 
-        cuadricula[nuevaPos.first][nuevaPos.second] = false;
-        if(sigReg >= 3 || manhattan(nuevaPos, reg[sigReg]) > casillasEntreReg) {
+        if(sigReg < 3 && paso == regsPaso[sigReg] && 
+            (col != regsCol[sigReg] || row != regsRow[sigReg])) {
+                //NADA
+        } else {
+
+            cuadricula[nuevaRow][nuevaCol] = false;
+
             caminos += nRecorridos_YuMi(
                 cuadricula,
-                filas, columnas, casillasEntreReg,
-                reg,
-                (sigReg < 3 && iguales(nuevaPos, reg[sigReg])) ? sigReg + 1 : sigReg,
-                nuevaPos
+                regsRow,
+                regsCol,
+                regsPaso,
+                nuevaRow,
+                nuevaCol,
+                paso + 1,
+                paso == regsPaso[sigReg] ? sigReg + 1 : sigReg
             );
+
+            cuadricula[nuevaRow][nuevaCol] = true;   
         }
-        cuadricula[nuevaPos.first][nuevaPos.second] = true;
     }
 
     return caminos;
 }
 
+int main(int argc, char* argv[]) {
 
-/**
- * Programa principal
- */
-int main(int argc, char *argv[]) {
+    if(argc != 3) {
+        cerr << "Error: número de parámetros incorrecto.";
+        return -1;
+    }
 
+    string fichIn  = argv[1];
+    string fichOut = argv[2];
+
+    ifstream fin; fin.open(fichIn);
+    if(!fin.is_open()) {
+        cerr << "Error: no se puede acceder a \"" + fichIn + "\".";
+        return -1;
+    }
+
+    ofstream fout; fout.open(fichOut);
+    if(!fout.is_open()) {
+        cerr << "Error: no se puede abrir/crear \"" + fichOut + "\".";
+        return -1;
+    }
+
+    unsigned int filas, columnas;
+    unsigned int regsRow[3], regsCol[3], regsPaso[3];
+    while(fin >> filas >> columnas >> regsRow[0] >> regsCol[0] >> regsRow[1] >> regsCol[1] >> regsRow[2] >> regsCol[2]) {
+        vector<vector<bool>> cuadricula(filas, vector<bool>(columnas, true));
+        cuadricula[0][0] = false;
+        regsPaso[0] = filas * columnas / 4;
+        regsPaso[1] = 2 * filas * columnas / 4;
+        regsPaso[2] = 3 * filas * columnas / 4;
+        fout << nRecorridos_YuMi(
+            cuadricula,
+            regsRow,
+            regsCol,
+            regsPaso
+        ) << endl;
+    }
+
+    fin.close();
+    fout.close();
 }
