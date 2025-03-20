@@ -18,7 +18,7 @@ unsigned int manhattan(int x1, int y1, int x2, int y2) {
 }
 
 /**
- * Implementa
+ * Auxiliar para el Predicado 6
  */
 bool sonTodasLasCasillasAlcanzables(vector<vector<bool>>& matrix) {
     int rows = matrix.size();
