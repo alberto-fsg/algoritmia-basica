@@ -84,42 +84,35 @@ bool sonTodasLasCasillasAlcanzables(vector<vector<bool>>& matrix) {
 
 unsigned int nRecorridos_YuMi(
     vector<vector<bool>>& cuadricula,
-    const unsigned int  regsRow[4],
-    const unsigned int  regsCol[4],
-    const unsigned int regsPaso[4],
-    unsigned int finReg,
-    vector<vector<vector<bool>>>& caminos,
+    const unsigned int  regsRow[3],
+    const unsigned int  regsCol[3],
+    const unsigned int regsPaso[3],
     unsigned int  row   = 0,
     unsigned int  col   = 0,
     unsigned int paso   = 1,
-    unsigned int sigReg = 0,
-    unsigned int camino = 0
+    unsigned int sigReg = 0
 ) {
-    cout << "CACA" << endl;
 
     // Predicado 6: Dado el recorrido actual Yumi no puede completarlo porque hay casillas "no alcanzables"
     if (!sonTodasLasCasillasAlcanzables(cuadricula)) return 0;
     
     // Objetivo
-    if (row == regsRow[finReg] && col == regsCol[finReg] && sigReg >= finReg &&
+    if (row == 0 && col == 1 && sigReg >= 3 &&
         paso == cuadricula.size() * cuadricula[0].size()) {
             return 1;
     }
 
-    if(sigReg < finReg) {
+    if(sigReg < 3) {
         // Predicado 5: YuMi no puede llegar al checkpoint en el número de pasos indicado
         if(manhattan(row, col, regsRow[sigReg], regsCol[sigReg]) > regsPaso[sigReg] - paso) {
-            caminos.pop_back();
             return 0;
         }
         // Predicado 4: YuMi no llega al checkpoint en el paso establecido
         if(paso == regsPaso[sigReg] && (row != regsRow[sigReg] || col != regsCol[sigReg])) {
-            caminos.pop_back();
             return 0;
         }
         // Predicado 3: YuMi llega pronto a un checkpoint
         if(row == regsRow[sigReg] && col == regsCol[sigReg] && paso != regsPaso[sigReg]) {
-            caminos.pop_back();
             return 0;
         }
     }
@@ -135,7 +128,7 @@ unsigned int nRecorridos_YuMi(
     if (row < cuadricula.size() - 1 && cuadricula[row + 1][col])
         movimientos.push_back(NORTE);
 
-    unsigned int _caminos = 0;
+    unsigned int caminos = 0;
     
     for(movimiento m : movimientos) {
         unsigned int nuevaRow = row;
@@ -155,29 +148,22 @@ unsigned int nRecorridos_YuMi(
         }
 
         cuadricula[nuevaRow][nuevaCol] = false;
-        caminos[camino][nuevaRow][nuevaCol] = true;
-        
 
-        _caminos += nRecorridos_YuMi(
+        caminos += nRecorridos_YuMi(
             cuadricula,
             regsRow,
             regsCol,
             regsPaso,
-            finReg,
-            caminos,
             nuevaRow,
             nuevaCol,
             paso + 1,
             paso == regsPaso[sigReg] ? sigReg + 1 : sigReg
         );
 
-        cuadricula[nuevaRow][nuevaCol] = true;
-
-        camino++;
-        caminos.push_back(vector<vector<bool>>(3, vector<bool>(6, false)));
+        cuadricula[nuevaRow][nuevaCol] = true;   
     }
 
-    return _caminos;
+    return caminos;
 }
 
 int main(int argc, char* argv[]) {
@@ -203,49 +189,21 @@ int main(int argc, char* argv[]) {
     }
 
     unsigned int filas, columnas;
-    unsigned int regsRow[4], regsCol[4], regsPaso[4];
+    unsigned int regsRow[3], regsCol[3], regsPaso[3];
     while(fin >> filas >> columnas >> regsRow[0] >> regsCol[0] >> regsRow[1] >> regsCol[1] >> regsRow[2] >> regsCol[2]) {
         auto ini = chrono::high_resolution_clock::now();
-
         vector<vector<bool>> cuadricula(filas, vector<bool>(columnas, true));
         cuadricula[0][0] = false;
-        regsRow[3] = 0;
-        regsCol[3] = 1;
         regsPaso[0] = filas * columnas / 4;
         regsPaso[1] = 2 * filas * columnas / 4;
         regsPaso[2] = 3 * filas * columnas / 4;
-        regsPaso[3] = filas * columnas;
-
-        const unsigned int N = 2; // 4 / N división entera porfavor
-        vector<vector<vector<bool>>> caminos[N];
-        caminos[0].push_back(vector<vector<bool>>(3, vector<bool>(6, false)));
-        caminos[1].push_back(vector<vector<bool>>(3, vector<bool>(6, false)));
-
-        for (unsigned int i = 0; i < N; i ++) {
-            nRecorridos_YuMi(
-                cuadricula,
-                regsRow,
-                regsCol,
-                regsPaso,
-                i == 0 ? 1 : 3, // no funciona para N = 4
-                i == 0 ? caminos[0] : caminos[1], // no funciona para N = 4,
-                i == 0 ? 0 : regsRow[1],
-                i == 0 ? 0 : regsCol[1],
-                i == 0 ? 1 : regsPaso[1],
-                i == 0 ? 0 : 2
-            );
-        
-/*
-            for(auto c: caminos[i]) {
-                for(int j = 0; j < c.size(); j++) {
-                    for(int k = 0; k < c[0].size(); k++) {
-                        cout << c[j][k] << ' ';
-                    }
-                    cout << "\n";
-                }
-            }*/
-        }
-
+        fout << nRecorridos_YuMi(
+            cuadricula,
+            regsRow,
+            regsCol,
+            regsPaso
+        );
+        fout << ' ';
         auto fin = chrono::high_resolution_clock::now();
         chrono::duration<double, milli> duracion = fin - ini;
         fout << fixed << setprecision(5) << duracion.count() << endl;
