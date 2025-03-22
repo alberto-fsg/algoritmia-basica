@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <iostream>
 #include <utility>
 #include <fstream>
@@ -8,6 +9,9 @@
 #include <queue>
 #include <cmath>
 #include <tuple>
+#include <thread>
+#include <atomic>
+
 
 using namespace std;
 
@@ -235,53 +239,63 @@ int main(int argc, char* argv[]) {
         regsRow[3] = 0;
         regsCol[3] = 1;
 
-        /*
-        vector<vector<bool>>& cuadricula,
-        const unsigned int  regsRow[3], // vector fila registros
-        const unsigned int  regsCol[3], // vector columna registros
-        const unsigned int regsPaso[3], // número de pasos hasta cada registro
-        const unsigned int meta, // indice de registro que es la meta
+        // Se buscan en paralelo result1 y result2
+        vector<vector<vector<bool>>> result1, result2;
+        thread t1([&](){
+            result1 = nRecorridos_YuMi(
+                cuadricula1,
+                regsRow,
+                regsCol,
+                regsPaso,
+                1,
+                0,
+                0,
+                1,
+                0
+            );
+        });
+        thread t2([&](){
+            result2 = nRecorridos_YuMi(
+                cuadricula2,
+                regsRow,
+                regsCol,
+                regsPaso,
+                3,
+                regsRow[1],
+                regsCol[1],
+                regsPaso[1],
+                2
+            );
+        });
+        t1.join();
+        t2.join();
 
-        unsigned int  row   = 0, // fila actual
-        unsigned int  col   = 0, // columna actual
-        unsigned int paso   = 1, // número de pasos actuales
-        unsigned int sigReg = 0  // siguiente índice del vector de registros al que llegar
-        */
-
-        auto result1 = nRecorridos_YuMi(
-            cuadricula1,
-            regsRow,
-            regsCol,
-            regsPaso,
-            1,
-
-            0,
-            0,
-            1,
-            0
-        );
-
-        auto result2 = nRecorridos_YuMi(
-            cuadricula2,
-            regsRow,
-            regsCol,
-            regsPaso,
-            3,
-            regsRow[1],
-            regsCol[1],
-            regsPaso[1],
-            2
-        );
-
-        int count = 0;
-
-        for (size_t i = 0; i < result1.size(); ++i) {
-            for (size_t j = 0; j < result2.size(); ++j) {
-                if (areComplementary(result1[i], result2[j])) {
-                    ++count;
+        // Se buscan en paralelo las permutaciones válidas utilizando múltiples hilos
+        atomic<int> countAtomic(0);
+        vector<thread> threads;
+        unsigned int num_threads = thread::hardware_concurrency();
+        if(num_threads == 0) num_threads = 2;
+        size_t block_size = (result1.size() + num_threads - 1) / num_threads;
+        
+        for (unsigned int t = 0; t < num_threads; t++) {
+            size_t start = t * block_size;
+            size_t end = min(start + block_size, result1.size());
+            threads.push_back(thread([start, end, &result1, &result2, &countAtomic](){
+                int local_count = 0;
+                for (size_t i = start; i < end; ++i) {
+                    for (size_t j = 0; j < result2.size(); ++j) {
+                        if (areComplementary(result1[i], result2[j])) {
+                            local_count++;
+                        }
+                    }
                 }
-            }
+                countAtomic += local_count;
+            }));
         }
+        for(auto& t : threads) {
+            t.join();
+        }
+        int count = countAtomic.load();
 
         auto fin_tiempo = chrono::high_resolution_clock::now();
         chrono::duration<double, milli> duracion = fin_tiempo - ini;
