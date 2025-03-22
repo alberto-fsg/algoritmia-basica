@@ -84,13 +84,15 @@ bool sonTodasLasCasillasAlcanzables(vector<vector<bool>>& matrix) {
 
 vector<vector<vector<bool>>> nRecorridos_YuMi(
     vector<vector<bool>>& cuadricula,
-    const unsigned int  regsRow[3],
-    const unsigned int  regsCol[3],
-    const unsigned int regsPaso[3],
-    unsigned int  row   = 0,
-    unsigned int  col   = 0,
-    unsigned int paso   = 1,
-    unsigned int sigReg = 0
+    const unsigned int  regsRow[4], // vector fila registros
+    const unsigned int  regsCol[4], // vector columna registros
+    const unsigned int regsPaso[4], // número de pasos hasta cada registro
+    const unsigned int meta, // indice de registro que es la meta
+
+    unsigned int  row   = 0, // fila actual
+    unsigned int  col   = 0, // columna actual
+    unsigned int paso   = 1, // número de pasos actuales
+    unsigned int sigReg = 0  // siguiente índice del vector de registros al que llegar
 ) {
 
     // Predicado 6: Dado el recorrido actual Yumi no puede completarlo porque hay casillas "no alcanzables"
@@ -98,13 +100,13 @@ vector<vector<vector<bool>>> nRecorridos_YuMi(
 
     
     // Objetivo
-    if (row == 0 && col == 1 && sigReg >= 3 &&
-        paso == cuadricula.size() * cuadricula[0].size()) {
+    if (row == regsRow[meta] && col == regsCol[meta] && sigReg >= meta &&
+        paso == regsPaso[meta]) {
             vector<vector<bool>> path = cuadricula;
             return {path};
     }
 
-    if(sigReg < 3) {
+    //if(sigReg < meta) {
         // Predicado 5: YuMi no puede llegar al checkpoint en el número de pasos indicado
         if(manhattan(row, col, regsRow[sigReg], regsCol[sigReg]) > regsPaso[sigReg] - paso) {
             return {};
@@ -117,7 +119,7 @@ vector<vector<vector<bool>>> nRecorridos_YuMi(
         if(row == regsRow[sigReg] && col == regsCol[sigReg] && paso != regsPaso[sigReg]) {
             return {};
         }
-    }
+    //}
 
     // Predicado 1 y 2: Movimiento válido en cuadrícula y celda no ocupada
     vector<movimiento> movimientos;
@@ -156,6 +158,7 @@ vector<vector<vector<bool>>> nRecorridos_YuMi(
             regsRow,
             regsCol,
             regsPaso,
+            meta,
             nuevaRow,
             nuevaCol,
             paso + 1,
@@ -168,6 +171,31 @@ vector<vector<vector<bool>>> nRecorridos_YuMi(
     }
 
     return caminos;
+}
+
+bool areComplementary(const vector<vector<bool>>& path1, const vector<vector<bool>>& path2) {
+    int filas = path1.size();
+    int columnas = path1[0].size();
+
+    for (int i = 0; i < filas; ++i) {
+        for (int j = 0; j < columnas; ++j) {
+            if ((path1[i][j] ^ path2[i][j]) != true) {
+                return false; // ¡Oh no! Un "false" se coló en la fiesta
+            }
+        }
+    }
+
+    return true; // ¡Alegría! Todos los XOR dieron true 🎉
+}
+
+void printPath(const vector<vector<bool>>& matrix) {
+    for (const auto& row : matrix) {
+        for (bool cell : row) {
+            // Assuming true = unvisited (.), false = visited (X)
+            cout << (cell ? "." : "X") << " ";
+        }
+        cout << endl;
+    }
 }
 
 int main(int argc, char* argv[]) {
@@ -193,25 +221,71 @@ int main(int argc, char* argv[]) {
     }
 
     unsigned int filas, columnas;
-    unsigned int regsRow[3], regsCol[3], regsPaso[3];
+    unsigned int regsRow[4], regsCol[4], regsPaso[4];
     while(fin >> filas >> columnas >> regsRow[0] >> regsCol[0] >> regsRow[1] >> regsCol[1] >> regsRow[2] >> regsCol[2]) {
         auto ini = chrono::high_resolution_clock::now();
-        vector<vector<bool>> cuadricula(filas, vector<bool>(columnas, true));
-        cuadricula[0][0] = false;
+        vector<vector<bool>> cuadricula1(filas, vector<bool>(columnas, true));
+        vector<vector<bool>> cuadricula2(filas, vector<bool>(columnas, true));
+        cuadricula1[0][0] = false;
+        //cuadricula2[regsRow[1]][regsCol[1]] = false;
         regsPaso[0] = filas * columnas / 4;
         regsPaso[1] = 2 * filas * columnas / 4;
         regsPaso[2] = 3 * filas * columnas / 4;
-        auto result = nRecorridos_YuMi(
-            cuadricula,
+        regsPaso[3] = filas * columnas;
+        regsRow[3] = 0;
+        regsCol[3] = 1;
+
+        /*
+        vector<vector<bool>>& cuadricula,
+        const unsigned int  regsRow[3], // vector fila registros
+        const unsigned int  regsCol[3], // vector columna registros
+        const unsigned int regsPaso[3], // número de pasos hasta cada registro
+        const unsigned int meta, // indice de registro que es la meta
+
+        unsigned int  row   = 0, // fila actual
+        unsigned int  col   = 0, // columna actual
+        unsigned int paso   = 1, // número de pasos actuales
+        unsigned int sigReg = 0  // siguiente índice del vector de registros al que llegar
+        */
+
+        auto result1 = nRecorridos_YuMi(
+            cuadricula1,
             regsRow,
             regsCol,
-            regsPaso
+            regsPaso,
+            1,
+
+            0,
+            0,
+            1,
+            0
         );
-        fout << result.size();
-        fout << ' ';
+
+        auto result2 = nRecorridos_YuMi(
+            cuadricula2,
+            regsRow,
+            regsCol,
+            regsPaso,
+            3,
+            regsRow[1],
+            regsCol[1],
+            regsPaso[1],
+            2
+        );
+
+        int count = 0;
+
+        for (size_t i = 0; i < result1.size(); ++i) {
+            for (size_t j = 0; j < result2.size(); ++j) {
+                if (areComplementary(result1[i], result2[j])) {
+                    ++count;
+                }
+            }
+        }
+
         auto fin_tiempo = chrono::high_resolution_clock::now();
         chrono::duration<double, milli> duracion = fin_tiempo - ini;
-        fout << fixed << setprecision(5) << duracion.count() << endl;
+        fout << count << ' ' << fixed << setprecision(5) << duracion.count() << endl;
     }
 
     fin.close();
