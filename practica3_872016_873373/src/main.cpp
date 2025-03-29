@@ -1,88 +1,123 @@
-#include <iostream>
+/**
+ * @file main.cpp
+ * @brief Programa principal para probar nuestro algoritmo de resolución de recorridos YuMi con distintos métodos.
+ */
+
+#include <chrono>
+#include <cmath>
 #include <fstream>
 #include <iomanip>
+#include <iostream>
 #include <string>
-#include <chrono>
-#include <queue>
-#include <cmath>
-#include <vector>
-#include <tuple>
 
 #include "BitSet.hpp"
-#include "recorridosYumi.hpp"
+#include "RecorridosYumi.hpp"
 
 using namespace std;
 
-int main(int argc, char* argv[]) {
-    // Verificar parámetros mínimos requeridos y mostrar uso
-    if (argc < 3) {
-        cerr << "Uso: " << argv[0] << " <entrada> <salida> [-m <modo>]" << endl;
-        cerr << "Modos disponibles: directa, meet-in-the-middle" << endl;
-        return -1;
+int main(int argc, char *argv[]) {
+  /**
+   * Verificar parámetros
+   */
+  if (argc < 4) {
+    cerr << "Uso: " << argv[0] << " -m <DIRECTA|MEET_IN_THE_MIDDLE> <entrada> <salida>" << endl;
+    return -1;
+  }
+
+  /**
+   * Procesar parámetro -m
+   */
+  string metodo = "";
+  string fichIn, fichOut;
+
+  if (string(argv[1]) == "-m") {
+    metodo = argv[2];
+    if (metodo != "DIRECTA" && metodo != "MEET_IN_THE_MIDDLE") {
+      cerr << "Error: método debe ser DIRECTA o MEET_IN_THE_MIDDLE" << endl;
+      return -1;
+    }
+    fichIn = argv[3];
+    fichOut = argv[4];
+  } else {
+    cerr << "Error: parámetro -m no encontrado" << endl;
+    cerr << "Uso: " << argv[0] << " -m <DIRECTA|MEET_IN_THE_MIDDLE> <entrada> <salida>" << endl;
+    return -1;
+  }
+
+  /**
+   * Abrir ficheros
+   */
+  ifstream fin(fichIn);
+  if (!fin.is_open()) {
+    cerr << "Error: no se puede acceder a \"" << fichIn << "\".";
+    return -1;
+  }
+
+  ofstream fout(fichOut);
+  if (!fout.is_open()) {
+    cerr << "Error: no se puede abrir/crear \"" << fichOut << "\".";
+    return -1;
+  }
+
+  /**
+   * Llamar al algoritmo con cada prueba en el fichero de entrada
+   */
+  unsigned int filas, columnas;
+  unsigned int regsRow[N], regsCol[N], regsPaso[N];
+  while (fin >> filas >> columnas >> regsRow[0] >> regsCol[0] >> regsRow[1] >>
+         regsCol[1] >> regsRow[2] >> regsCol[2]) {
+
+    /**
+     * Iniciar medición de tiempo
+     */
+    auto ini = chrono::high_resolution_clock::now();
+
+    /**
+     * La casilla final se trata como un checkpoint
+     */
+    regsRow[3] = 0;
+    regsCol[3] = 1;
+
+    /**
+     * Inicializar el número de pasos que hay que tener en cada checkpoint según el enunciado de la práctica
+     */
+    regsPaso[0] = filas * columnas / 4;
+    regsPaso[1] = 2 * filas * columnas / 4;
+    regsPaso[2] = 3 * filas * columnas / 4;
+    regsPaso[3] = filas * columnas;
+
+    unsigned int result;
+    if (metodo == "DIRECTA") {
+      BitSet b(filas, columnas);
+      result = RecorridosYumi::busquedaDirecta(b,
+                                               regsRow,
+                                               regsCol,
+                                               regsPaso);
+    } else { // MEET_IN_THE_MIDDLE
+      BitSet b1(filas, columnas);
+      BitSet b2(filas, columnas);
+      result = RecorridosYumi::busquedaMeetInTheMiddle(b1,
+                                                       b2,
+                                                       regsRow,
+                                                       regsCol,
+                                                       regsPaso);
     }
 
-    string fichIn = argv[1];
-    string fichOut = argv[2];
-    modo mode = DIRECTA;
+    fout << result << ' ';
 
-    // Procesar parámetros opcionales
-    int i = 3;
-    while (i < argc) {
-        string currentArg = argv[i];
-        
-        if (currentArg == "-m") {
-            // Verificar que existe el parámetro de modo
-            if (i + 1 >= argc) {
-                cerr << "Error: '-m' requiere un parámetro de modo" << endl;
-                return -1;
-            }
-            
-            string modeParam = argv[i + 1];
-            if (modeParam == "directa") {
-                mode = DIRECTA;
-            } else if (modeParam == "meet-in-the-middle") {
-                mode = MEET_IN_THE_MIDDLE;
-            } else {
-                cerr << "Error: Modo inválido '" << modeParam << "'" << endl;
-                return -1;
-            }
-            i += 2; // Saltar parámetro y su valor
-        } else {
-            // Manejar parámetros desconocidos
-            cerr << "Error: Parámetro desconocido '" << currentArg << "'" << endl;
-            return -1;
-        }
-    }
-    
-    ifstream fin(fichIn);
-    if (!fin.is_open()) {
-        cerr << "Error: no se puede acceder a \"" << fichIn << "\".";
-        return -1;
-    }
-    
-    ofstream fout(fichOut);
-    if (!fout.is_open()) {
-        cerr << "Error: no se puede abrir/crear \"" << fichOut << "\".";
-        return -1;
-    }
-    
-    unsigned int filas, columnas;
-    unsigned int regsRow[4], regsCol[4];
-    while (fin >> filas >> columnas  >> regsRow[0] >> regsCol[0] >> regsRow[1] >> regsCol[1] >> regsRow[2] >> regsCol[2]) {
-        auto ini = chrono::high_resolution_clock::now();
+    /**
+     * Terminar medición de tiempo y calcular diferencia
+     */
+    auto fin_time = chrono::high_resolution_clock::now();
+    chrono::duration<double, milli> duracion = fin_time - ini;
 
-        regsRow[3] = 0;
-        regsCol[3] = 1;
+    /**
+     * Imprimir resultado
+     */
+    fout << fixed << setprecision(5) << duracion.count() << endl;
+  }
 
-        fout << nRecorridos_YuMi(filas, columnas, regsRow, regsCol, MEET_IN_THE_MIDDLE) << ' ';
-
-        auto fin_time = chrono::high_resolution_clock::now();
-        chrono::duration<double, milli> duracion = fin_time - ini;
-
-        fout << fixed << setprecision(5) << duracion.count() << endl;
-    }
-    
-    fin.close();
-    fout.close();
-    return 0;
+  fin.close();
+  fout.close();
+  return 0;
 }

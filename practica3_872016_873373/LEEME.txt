@@ -6,3 +6,31 @@
 # instrucciones de instalación, compilación y ejecu-  #  
 # ción e instrucciones para repetir las pruebas       #
 #-----------------------------------------------------#
+
+## Organización del directorio
+.
+├── bin # directorio donde almacena el binario compilado por el script ./ejecutar.sh
+├── ejecutar.sh # compila y ejecuta las pruebas
+├── LEEME.txt
+├── src # fuentes
+│   ├── BitSet.cpp
+│   ├── BitSet.hpp # interfaz de nuestra estructura para almacenar bits individuales
+│   ├── main.cpp # para probar RecorridosYumi
+│   ├── RecorridosYumi.cpp
+│   └── RecorridosYumi.hpp # interfaz de nuestros algoritmos para solucionar la práctica 3
+└── tests # directorio con el fichero de pruebas y los resultados de su ejecución
+    ├── pruebas.txt
+    ├── resultados-directa.txt
+    └── resultados-meet-in-the-middle.txt
+
+## Instrucciones de instalación
+
+Con tener el fuente descargado en un sistema UNIX y GCC instalado ya está.
+
+## Compilación, ejecución y repetición de pruebas
+
+Automatizada mediante el siguiente script:
+
+```bash
+./ejecutar.sh
+```
