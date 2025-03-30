@@ -88,11 +88,15 @@ int main(int argc, char *argv[]) {
 
     unsigned int result;
     if (metodo == "DIRECTA") {
+      unsigned int nodosGenerados = 0;
       BitSet b(filas, columnas);
       result = RecorridosYumi::busquedaDirecta(b,
                                                regsRow,
                                                regsCol,
-                                               regsPaso);
+                                               regsPaso,
+                                               nodosGenerados
+                                              );
+      cout << "Nodos generados: " << nodosGenerados << endl;
     } else { // MEET_IN_THE_MIDDLE
       BitSet b1(filas, columnas);
       BitSet b2(filas, columnas);

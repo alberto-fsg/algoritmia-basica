@@ -87,10 +87,14 @@ unsigned int RecorridosYumi::busquedaDirecta(BitSet &b,
                                              const unsigned int regsFila[N],
                                              const unsigned int regsCol[N],
                                              const unsigned int regsPaso[N],
+                                             unsigned int& nodosGenerados,
                                              const unsigned int fila,
                                              const unsigned int columna,
                                              const unsigned int paso,
-                                             const unsigned int sigReg) {
+                                             const unsigned int sigReg
+                                            ) {
+  ++nodosGenerados;
+
   /**
    * Predicado 6: comprobar que no hayan casillas aisladas.
    */
@@ -181,7 +185,7 @@ unsigned int RecorridosYumi::busquedaDirecta(BitSet &b,
     }
 
     b.set(nuevaFila, nuevaCol, CASILLA_VISITADA); // Marcar la celda como visitada
-    caminos += busquedaDirecta(b, regsFila, regsCol, regsPaso, nuevaFila, nuevaCol, paso + 1, (paso == regsPaso[sigReg] ? sigReg + 1 : sigReg));
+    caminos += busquedaDirecta(b, regsFila, regsCol, regsPaso, nodosGenerados, nuevaFila, nuevaCol, paso + 1, (paso == regsPaso[sigReg] ? sigReg + 1 : sigReg));
     b.set(nuevaFila, nuevaCol, CASILLA_NO_VISITADA); // Deshacer el movimiento (backtracking)
   }
 

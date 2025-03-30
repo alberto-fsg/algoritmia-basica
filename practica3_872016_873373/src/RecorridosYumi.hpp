@@ -46,10 +46,12 @@ public:
       const unsigned int regsFila[N],
       const unsigned int regsCol[N],
       const unsigned int regsPaso[N],
+      unsigned int& nodosGenerados,
       const unsigned int fila = 0,
       const unsigned int columna = 0,
       const unsigned int paso = 1,
-      const unsigned int sigReg = 0);
+      const unsigned int sigReg = 0
+    );
 
   /**
    * @brief Resuelve el problema mediante búsqueda meet-in-the-middle con backtracking.
