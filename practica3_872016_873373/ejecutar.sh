@@ -23,4 +23,11 @@ g++ -o $OUTPUT_DIR/recorridosYumi $SRC_DIR/main.cpp $SRC_DIR/BitSet.cpp $SRC_DIR
 chmod u+x $OUTPUT_DIR/recorridosYumi
 $OUTPUT_DIR/recorridosYumi -m DIRECTA $TESTS_DIR/pruebas.txt $TESTS_DIR/resultados-directa.txt
 $OUTPUT_DIR/recorridosYumi -m MEET_IN_THE_MIDDLE $TESTS_DIR/pruebas.txt $TESTS_DIR/resultados-meet-in-the-middle.txt
+
+read -p "¿Quieres ejecutar las otras pruebas? (ADVERTENCIA: Esto tardará mucho tiempo) [y/N] " respuesta
+if [[ "$respuesta" =~ ^[Yy]$ ]]; then
+    $OUTPUT_DIR/recorridosYumi -m DIRECTA $TESTS_DIR/otras-pruebas.txt $TESTS_DIR/otros-resultados-directa.txt
+    $OUTPUT_DIR/recorridosYumi -m MEET_IN_THE_MIDDLE $TESTS_DIR/otras-pruebas.txt $TESTS_DIR/otros-resultados-meet-in-the-middle.txt
+fi
+
 rm $OUTPUT_DIR/*
