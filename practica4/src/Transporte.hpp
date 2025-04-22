@@ -12,8 +12,8 @@ struct Request {
 
 struct Node {
   unsigned int depth; // How many requests have been decided (current decision = depth)
-  double cost_so_far;
-  std::vector<unsigned int> accepted_passangers; // Representation of the current accepted passangers for each segment
+  double benefit_so_far;
+  std::vector<unsigned int> accepted_passangers; // Representation of the current accepted passengers for each segment
 
   Node(unsigned int segments); // To initialize 'accepted_passangers' with 'segments' number of 0s
 };
@@ -30,9 +30,9 @@ public:
 private:
   unsigned int capacity, segments;
   std::vector<Request> requests;
-  double best_cost; // Solution to the problem
+  double best_benefit; // Solution to the problem (maximized benefit)
 
-  double estimateCost(const Node &node); // ĉ(x)
-  bool shouldPrune(const Node &node);    // U(x)
+  double estimateBenefit(const Node &node); // ĉ(x)
+  bool shouldPrune(const Node &node);       // U(x)
   void search(Node &node);
 };

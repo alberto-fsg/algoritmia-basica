@@ -8,11 +8,11 @@ static bool densityGreaterThan(const Request &a, const Request &b) {
   return a.density > b.density;
 }
 
-Node::Node(unsigned int segments) : depth(0), cost_so_far(0), accepted_passangers(segments, 0) {}
+Node::Node(unsigned int segments) : depth(0), benefit_so_far(0), accepted_passangers(segments, 0) {}
 
 Transporte::Transporte(unsigned int capacity, unsigned int segments, std::vector<Request> &reqs)
     : capacity(capacity), segments(segments), requests(reqs) {
-  best_cost = std::numeric_limits<double>::infinity();
+  best_benefit = -std::numeric_limits<double>::infinity(); // Maximizing benefit
 
   for (auto &r : requests) {
     r.benefit = r.passengers * (r.arrival_station_index - r.departure_station_index);
@@ -23,38 +23,38 @@ Transporte::Transporte(unsigned int capacity, unsigned int segments, std::vector
   std::sort(requests.begin(), requests.end(), densityGreaterThan);
 }
 
-// Estimated cost function ĉ(x)
-double Transporte::estimateCost(const Node &node) {
+// Estimated benefit function ĉ(x)
+double Transporte::estimateBenefit(const Node &node) {
   std::vector<unsigned int> rem(segments, capacity);
   for (unsigned int s = 0; s < segments; ++s)
     rem[s] -= node.accepted_passangers[s];
 
-  // 'bound_benefit' is the maximum possible profit
-  double bound_benefit = -node.cost_so_far;
+  // 'bound_benefit' is the maximum possible benefit
+  double bound_benefit = node.benefit_so_far;
   for (unsigned int k = node.depth; k < requests.size(); ++k) {
     const auto &r = requests[k];
 
     // Search tightest capacity of a station in the request's stations
-    // (we can take fractions of the request, but the passangers
+    // (we can take fractions of the request, but the passengers)
     unsigned int capacity = *std::min_element(rem.begin() + r.departure_station_index,
                                               rem.begin() + r.arrival_station_index);
     if (capacity <= 0)
       continue;
 
-    // Calculate the benefit adquired by accepting this passangers
+    // Calculate the benefit acquired by accepting these passengers
     unsigned int use = std::min(capacity, r.passengers);
     bound_benefit += use * (r.arrival_station_index - r.departure_station_index);
 
-    // Mark the used capacity by this passangers
+    // Mark the used capacity by these passengers
     for (unsigned int s = r.departure_station_index; s < r.arrival_station_index; ++s)
       rem[s] -= use;
   }
-  return node.cost_so_far - bound_benefit;
+  return bound_benefit;
 }
 
 // Pruning function U(x)
 bool Transporte::shouldPrune(const Node &node) {
-  return estimateCost(node) >= best_cost;
+  return estimateBenefit(node) <= best_benefit; // If the estimated benefit is lower or equal to current best, prune
 }
 
 void Transporte::search(Node &node) {
@@ -63,16 +63,16 @@ void Transporte::search(Node &node) {
 
   // Leaf case
   if (node.depth == requests.size()) {
-    best_cost = std::min(best_cost, node.cost_so_far);
+    best_benefit = std::max(best_benefit, node.benefit_so_far);
     return;
   }
 
-  // Explore the tree which generates as a result of declining this
+  // Explore the tree which generates as a result of declining this request
   Node left = node;
   left.depth++;
   search(left);
 
-  // ¿Can we accept this request? If not, we are done
+  // Can we accept this request? If not, we are done
   const auto &r = requests[node.depth];
   for (unsigned int s = r.departure_station_index; s < r.arrival_station_index; ++s) {
     if (node.accepted_passangers[s] + r.passengers > capacity) {
@@ -80,10 +80,10 @@ void Transporte::search(Node &node) {
     }
   }
 
-  // Explore the tree which generates as a result of accepting this
+  // Explore the tree which generates as a result of accepting this request
   Node right = node;
   right.depth++;
-  right.cost_so_far -= r.benefit;
+  right.benefit_so_far += r.benefit; // Add the benefit of accepting this request
   for (unsigned int s = r.departure_station_index; s < r.arrival_station_index; ++s)
     right.accepted_passangers[s] += r.passengers;
   search(right);
@@ -93,5 +93,5 @@ void Transporte::search(Node &node) {
 double Transporte::solve() {
   Node root(segments);
   search(root);
-  return -best_cost;
+  return best_benefit; // Return the best benefit found
 }
