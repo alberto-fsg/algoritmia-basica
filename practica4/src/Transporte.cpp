@@ -3,10 +3,14 @@
 #include <algorithm>
 #include <limits>
 
-// Comparator for sorting by density (descending) which can be passed to std::sort
-static bool densityGreaterThan(const Request &a, const Request &b) {
-  return a.density > b.density;
+static bool beneficGreaterThan(const Request &a, const Request &b) {
+  return a.benefit > b.benefit;
 }
+
+// Comparator for sorting by density (descending) which can be passed to std::sort
+/*static bool densityGreaterThan(const Request &a, const Request &b) {
+  return a.density > b.density;
+}*/
 
 Node::Node(unsigned int segments) : depth(0), benefit_so_far(0), accepted_passangers(segments, 0) {}
 
@@ -16,11 +20,12 @@ Transporte::Transporte(unsigned int capacity, unsigned int segments, std::vector
 
   for (auto &r : requests) {
     r.benefit = r.passengers * (r.arrival_station_index - r.departure_station_index);
-    r.density = r.benefit / ((r.arrival_station_index - r.departure_station_index) * r.passengers);
+    //r.density = r.benefit / ((r.arrival_station_index - r.departure_station_index) * r.passengers);
   }
 
   // Sort by density to improve pruning probabilities (search the most promising requests first)
-  std::sort(requests.begin(), requests.end(), densityGreaterThan);
+  // std::sort(requests.begin(), requests.end(), densityGreaterThan);
+  std::sort(requests.begin(), requests.end(), beneficGreaterThan);
 }
 
 // Estimated benefit function ĉ(x)

@@ -7,7 +7,7 @@ struct Request {
   unsigned int arrival_station_index;
   unsigned int passengers;
   double benefit; // Passengers * (arrival_station_index - departure_station_index)
-  double density; // Benefit / ((arrival_station_index - departure_station_index) * passengers)
+  //double density; // Benefit / ((arrival_station_index - departure_station_index) * passengers)
 };
 
 struct Node {
