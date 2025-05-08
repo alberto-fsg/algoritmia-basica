@@ -25,9 +25,10 @@ Transporte::Transporte(unsigned int capacity, unsigned int segments, std::vector
 
 // Estimated benefit function ĉ(x)
 double Transporte::estimateBenefit(const Node &node) {
-  std::vector<unsigned int> rem(segments, capacity);
-  for (unsigned int s = 0; s < segments; ++s)
-    rem[s] -= node.accepted_passangers[s];
+  std::vector<unsigned int> remaining(segments, capacity);
+  for (unsigned int s = 0; s < segments; ++s) {
+    remaining[s] -= node.accepted_passangers[s];
+  }
 
   // 'bound_benefit' is the maximum possible benefit
   double bound_benefit = node.benefit_so_far;
@@ -36,8 +37,8 @@ double Transporte::estimateBenefit(const Node &node) {
 
     // Search tightest capacity of a station in the request's stations
     // (we can take fractions of the request, but the passengers)
-    unsigned int capacity = *std::min_element(rem.begin() + r.departure_station_index,
-                                              rem.begin() + r.arrival_station_index);
+    unsigned int capacity = *std::min_element(remaining.begin() + r.departure_station_index,
+                                              remaining.begin() + r.arrival_station_index);
     if (capacity <= 0) {
       continue;
     }
@@ -47,8 +48,9 @@ double Transporte::estimateBenefit(const Node &node) {
     bound_benefit += use * (r.arrival_station_index - r.departure_station_index);
 
     // Mark the used capacity by these passengers
-    for (unsigned int s = r.departure_station_index; s < r.arrival_station_index; ++s)
-      rem[s] -= use;
+    for (unsigned int s = r.departure_station_index; s < r.arrival_station_index; ++s) {
+      remaining[s] -= use;
+    }
   }
   return bound_benefit;
 }
