@@ -38,8 +38,9 @@ double Transporte::estimateBenefit(const Node &node) {
     // (we can take fractions of the request, but the passengers)
     unsigned int capacity = *std::min_element(rem.begin() + r.departure_station_index,
                                               rem.begin() + r.arrival_station_index);
-    if (capacity <= 0)
+    if (capacity <= 0) {
       continue;
+    }
 
     // Calculate the benefit acquired by accepting these passengers
     unsigned int use = std::min(capacity, r.passengers);
