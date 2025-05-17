@@ -19,8 +19,8 @@ struct Node {
 };
 
 /**
- * Implements Branch and Bound algorithm to solve Práctica 4: Ramificación y poda, programación lineal,
- * an assignment of Algoritmia Básica, Universidad de Zaragoza
+ * Implements Branch and Bound algorithm to solve Prctica 4: Ramificacin y poda, programacin lineal,
+ * an assignment of Algoritmia Bsica, Universidad de Zaragoza
  */
 class Transporte {
 public:
@@ -32,7 +32,7 @@ private:
   std::vector<Request> requests;
   double best_benefit; // Solution to the problem (maximized benefit)
 
-  double estimateBenefit(const Node &node); // ĉ(x)
+  double estimateBenefit(const Node &node); // (x)
   bool shouldPrune(const Node &node);       // U(x)
   void search(Node &node);
 };

@@ -28,7 +28,7 @@ Transporte::Transporte(unsigned int capacity, unsigned int segments, std::vector
   std::sort(requests.begin(), requests.end(), beneficGreaterThan);
 }
 
-// Estimated benefit function ĉ(x)
+// Estimated benefit function (x)
 double Transporte::estimateBenefit(const Node &node) {
   std::vector<unsigned int> remaining(segments, capacity);
   for (unsigned int s = 0; s < segments; ++s) {
